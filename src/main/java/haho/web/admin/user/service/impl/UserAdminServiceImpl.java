@@ -27,15 +27,22 @@ public class UserAdminServiceImpl implements UserAdminService {
         List<CustomerMemberDto> listResult = new ArrayList<>();
 
         pageResult.setPage(new PageInfo());
-        Page<CustomerMember> findAll = customerMemberDao.findAll(PageRequest.of(0, 10));
+        // Page<CustomerMember> findAll = customerMemberDao.findAll(PageRequest.of(0, 10));
+        Page<CustomerMember> findAll = customerMemberDao.findByMobile("19012340720", PageRequest.of(0, 10));
         List<CustomerMember> list = findAll.getContent();
-        for (CustomerMember customerMember : list) {
+        for (CustomerMember customerMember : findAll) {
             CustomerMemberDto customerMemberDto = new CustomerMemberDto();
             BeanUtils.copyProperties(customerMember, customerMemberDto);
             listResult.add(customerMemberDto);
         }
         pageResult.setResult(listResult);
         return pageResult;
+    }
+
+    @Override
+    public PageResult<List<CustomerMemberDto>> findByMobile(CustomerMemberDto customerDto, PageInfo page) {
+        Page<CustomerMember> findAll = customerMemberDao.findByMobile("15364155278", PageRequest.of(0, 10));
+        return null;
     }
 
 }
