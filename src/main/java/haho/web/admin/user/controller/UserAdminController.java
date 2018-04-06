@@ -27,6 +27,6 @@ public class UserAdminController {
 
     @GetMapping("/home")
     public String home(Model model) {
-        return "index";
+        return "home";
     }
 }
