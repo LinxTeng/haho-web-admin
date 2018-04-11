@@ -3,20 +3,16 @@ package haho.web.admin.user.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import haho.web.admin.common.page.PageInfo;
 import haho.web.admin.common.page.PageResult;
+import haho.web.admin.common.utils.DataSourceSwith;
 import haho.web.admin.user.dto.CustomerMemberDto;
 import haho.web.admin.user.mapper.CustomerMemberMapper;
 
 @Service
 public class CustomerMemberDao {
-    // 使用的jdbc
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     /** 根据手机号查找用户 */
     public PageResult<List<CustomerMemberDto>> list(CustomerMemberDto customerMemberDto, PageInfo page) {
@@ -37,7 +33,7 @@ public class CustomerMemberDao {
         }
         PageInfo pageInfo = this.getPage(sql, params.toArray(), page);
         sql += " limit " + pageInfo.getPageStartRow() + "," + pageInfo.getPageEndRow();
-        List<CustomerMemberDto> daoResult = this.jdbcTemplate.query(sql, new CustomerMemberMapper(), params.toArray());
+        List<CustomerMemberDto> daoResult = DataSourceSwith.getJdbcTemplate().query(sql, new CustomerMemberMapper(), params.toArray());
         PageResult<List<CustomerMemberDto>> result = PageResult.build();
         result.setResult(daoResult);
         result.setPage(page);
@@ -48,17 +44,8 @@ public class CustomerMemberDao {
     PageInfo getPage(String sql, Object[] params, PageInfo page) {
         // 查询分页
         sql = "select count(1) from (" + sql + ") aa";
-        Integer count = this.jdbcTemplate.queryForObject(sql, Integer.class, params);
+        Integer count = DataSourceSwith.getJdbcTemplate().queryForObject(sql, Integer.class, params);
         page.init(count);
         return page;
-    }
-
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
-
-    // 多环境切换
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import haho.web.admin.common.page.PageInfo;
 import haho.web.admin.common.page.PageResult;
+import haho.web.admin.common.utils.DataSourceSwith;
 import haho.web.admin.user.dao.CustomerMemberDao;
 import haho.web.admin.user.dto.CustomerMemberDto;
 
@@ -21,6 +22,7 @@ public class UserAdminServiceTest {
 
     @Test
     public void testList() {
+        DataSourceSwith.switchToTesta();
         CustomerMemberDto customerMemberDto = new CustomerMemberDto();
         customerMemberDto.setId(1L);
         PageInfo page = new PageInfo();
