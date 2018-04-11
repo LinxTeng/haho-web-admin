@@ -1,15 +1,64 @@
 package haho.web.admin.user.dao;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import java.util.ArrayList;
+import java.util.List;
 
-import haho.web.admin.user.domain.CustomerMember;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
-public interface CustomerMemberDao extends CrudRepository<CustomerMember, Long> {
+import haho.web.admin.common.page.PageInfo;
+import haho.web.admin.common.page.PageResult;
+import haho.web.admin.user.dto.CustomerMemberDto;
+import haho.web.admin.user.mapper.CustomerMemberMapper;
+
+@Service
+public class CustomerMemberDao {
+    // 使用的jdbc
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /** 根据手机号查找用户 */
-    Page<CustomerMember> findByMobile(String mobile, Pageable pageable);
+    public PageResult<List<CustomerMemberDto>> list(CustomerMemberDto customerMemberDto, PageInfo page) {
+        String sql = "select * from customer_member where 1=1";
+        // 组装参数
+        List<Object> params = new ArrayList<>();
+        if (customerMemberDto.getId() != null) {
+            sql += " and id=?";
+            params.add(customerMemberDto.getId());
+        }
+        if (customerMemberDto.getMobile() != null) {
+            sql += " and mobile=?";
+            params.add(customerMemberDto.getMobile());
+        }
+        if (customerMemberDto.getShopId() != null) {
+            sql += " and shop_id=?";
+            params.add(customerMemberDto.getShopId());
+        }
+        PageInfo pageInfo = this.getPage(sql, params.toArray(), page);
+        sql += " limit " + pageInfo.getPageStartRow() + "," + pageInfo.getPageEndRow();
+        List<CustomerMemberDto> daoResult = this.jdbcTemplate.query(sql, new CustomerMemberMapper(), params.toArray());
+        PageResult<List<CustomerMemberDto>> result = PageResult.build();
+        result.setResult(daoResult);
+        result.setPage(page);
+        return result;
+    }
 
+    // 计算分页总数
+    PageInfo getPage(String sql, Object[] params, PageInfo page) {
+        // 查询分页
+        sql = "select count(1) from (" + sql + ") aa";
+        Integer count = this.jdbcTemplate.queryForObject(sql, Integer.class, params);
+        page.init(count);
+        return page;
+    }
 
+    public JdbcTemplate getJdbcTemplate() {
+        return jdbcTemplate;
+    }
+
+    // 多环境切换
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 }

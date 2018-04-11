@@ -8,12 +8,7 @@ import haho.web.admin.user.dto.CustomerMemberDto;
 
 public interface UserAdminService {
     /**
-     * 查找用户
-     */
-    public PageResult<List<CustomerMemberDto>> listUser(CustomerMemberDto customerDto, PageInfo page);
-
-    /**
-     * 根据手机号查找用户
+     * 查找会员
      *
      * @param customerDto
      * @param page
@@ -21,5 +16,5 @@ public interface UserAdminService {
      * @date 2018年3月27日
      * @author linxTeng
      */
-    public PageResult<List<CustomerMemberDto>> findByMobile(CustomerMemberDto customerDto, PageInfo page);
+    public PageResult<List<CustomerMemberDto>> list(CustomerMemberDto customerDto, PageInfo page);
 }

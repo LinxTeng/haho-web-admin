@@ -11,7 +11,7 @@ public class CustomerMemberDto {
     private String mobile;
 
 
-    private String shopId;
+    private Long shopId;
 
 
     public Long getId() {
@@ -44,12 +44,12 @@ public class CustomerMemberDto {
     }
 
 
-    public String getShopId() {
+    public Long getShopId() {
         return shopId;
     }
 
 
-    public void setShopId(String shopId) {
+    public void setShopId(Long shopId) {
         this.shopId = shopId;
     }
 
