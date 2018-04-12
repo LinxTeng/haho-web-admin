@@ -1,9 +1,7 @@
 package haho.web.admin.user.service;
 
-import java.util.List;
-
 import haho.web.admin.common.page.PageInfo;
-import haho.web.admin.common.page.PageResult;
+import haho.web.admin.common.page.TableResult;
 import haho.web.admin.user.dto.CustomerMemberDto;
 
 public interface UserAdminService {
@@ -16,5 +14,5 @@ public interface UserAdminService {
      * @date 2018年3月27日
      * @author linxTeng
      */
-    public PageResult<List<CustomerMemberDto>> list(CustomerMemberDto customerDto, PageInfo page);
+    public TableResult<CustomerMemberDto> list(CustomerMemberDto customerDto, PageInfo page);
 }

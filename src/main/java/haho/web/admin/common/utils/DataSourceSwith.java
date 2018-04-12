@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class DataSourceSwith implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
-    private static JdbcTemplate jdbcTemplate;
+    private static ThreadLocal<JdbcTemplate> localJdbc = new ThreadLocal<>();
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -18,19 +18,35 @@ public class DataSourceSwith implements ApplicationContextAware {
     }
 
     public static JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
+        // 默认使用deva
+        if (localJdbc.get() == null) {
+            switchToDeva();
+        }
+        return localJdbc.get();
     }
 
+    // dev-a
     public static void switchToDeva() {
-        jdbcTemplate = (JdbcTemplate) applicationContext.getBean("devaJdbcTemplate");
+        localJdbc.set((JdbcTemplate) applicationContext.getBean("devaJdbcTemplate"));
     }
 
+    // dev-b
+    public static void switchToDevb() {
+        localJdbc.set((JdbcTemplate) applicationContext.getBean("devbJdbcTemplate"));
+    }
+
+    // test-a
     public static void switchToTesta() {
-        jdbcTemplate = (JdbcTemplate) applicationContext.getBean("testaJdbcTemplate");
+        localJdbc.set((JdbcTemplate) applicationContext.getBean("testaJdbcTemplate"));
     }
 
-    public static void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        DataSourceSwith.jdbcTemplate = jdbcTemplate;
+    // test-b
+    public static void switchToTestb() {
+        localJdbc.set((JdbcTemplate) applicationContext.getBean("testbJdbcTemplate"));
     }
 
+    // yufabu
+    public static void switchToYufabu() {
+        localJdbc.set((JdbcTemplate) applicationContext.getBean("yufabuJdbcTemplate"));
+    }
 }
