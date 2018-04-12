@@ -41,18 +41,18 @@
               <h3 class="box-title">查询条件</h3>
             </div>
             <!-- form start -->
-            <form class="form-horizontal" action="/get/user">
+            <form class="form-horizontal" id="user-form" action="/get/user">
               <div class="box-body">
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-1 ">环境</label>
 
                   <div class="col-sm-2">
-                    <select class="form-control" name="env">
+                    <select class="form-control" name="env" id="env" onchange="formSubmit()">
+	                    <option th:selected="${env =='dev-a'}">dev-a</option>
+	                    <option th:selected="${env =='dev-b'}">dev-b</option>
 	                    <option th:selected="${env =='test-a'}">test-a</option>
 	                    <option th:selected="${env =='test-b'}">test-b</option>
 	                    <option th:selected="${env =='yufabu'}">预发布</option>
-	                    <option th:selected="${env =='dev-a'}">dev-a</option>
-	                    <option th:selected="${env =='dev-b'}">dev-b</option>
                   	</select>
                   </div>
                 </div>
@@ -60,7 +60,7 @@
                   <label for="inputPassword3" class="col-sm-1 ">手机号</label>
 
                   <div class="col-sm-2">
-                    <input type="text" class="form-control" name="mobile" placeholder="手机号" th:value="${param.mobile}">
+                    <input type="text" class="form-control" name="mobile" id="mobile" placeholder="手机号" th:value="${param.mobile}">
                   </div>
                 </div>
                 
@@ -68,7 +68,7 @@
                   <label for="inputPassword3" class="col-sm-1 ">商户id</label>
 
                   <div class="col-sm-2">
-                    <input type="text" class="form-control" name="shopId" placeholder="商户id" th:value="${param.shopId}">
+                    <input type="text" class="form-control" name="shopId" id="shopId" placeholder="商户id" th:value="${param.shopId}">
                   </div>
                 </div>
               </div>
@@ -109,7 +109,7 @@
 	                  <td th:text="${prod.id}">236</td>
 	                  <td th:text="${prod.name}">掌贝</td>
 	                  <td th:text="${prod.mobile}">153625689</td>
-	                  <td><button type="submit" class="btn btn-danger">清除</button></td>
+	                  <td><button type="submit" class="btn btn-danger" th:onclick="'clearMobile('+${prod.id}+')'">清除</button></td>
 	                </tr>
 	                </tbody>
 	              </table>
@@ -133,6 +133,45 @@
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript">
+/**
+ * 清除会员的手机号
+ */
+function clearMobile(memberid) {
+	//环境变量
+	var env = $("#env").val();
+	var mobile=$("#mobile").val();
+	var shopId=$("shopId").val();
+	$.ajax({
+        type : "post",
+        url : "/clear/mobile",
+        data: {
+			'env':env,
+			'mobile': mobile,
+			'shopId':shopId,
+			'id':memberid			
+		},
+        success : function(result){
+        	console.log(result);
+            if(result.success){
+                alert('清除成功!');
+            }else{
+                alert(result.message);
+            }
+            
+        },
+        error : function(){
+            alert("接口出错!");
+        }
+    });
+}
 
+/**
+ * 切换环境时重新查询
+ */
+function formSubmit() {
+	$('#user-form').submit();
+}
+</script>
 </body>
 </html>

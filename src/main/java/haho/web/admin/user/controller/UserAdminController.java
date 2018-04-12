@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import haho.web.admin.common.page.PageInfo;
 import haho.web.admin.common.page.TableResult;
+import haho.web.admin.common.resp.ResultApi;
 import haho.web.admin.common.utils.DataSourceSwith;
 import haho.web.admin.user.dto.CustomerMemberDto;
 import haho.web.admin.user.service.UserAdminService;
@@ -23,21 +24,10 @@ public class UserAdminController {
         return "user/home";
     }
 
-    @RequestMapping("/get/user2")
+    @RequestMapping("/clear/mobile")
     @ResponseBody
-    TableResult<CustomerMemberDto> getUserInfo(Model model, CustomerMemberDto customerMemberDto) {
-        PageInfo page = new PageInfo();
-        page.setPageSize(100);
-        CustomerMemberDto params = new CustomerMemberDto();
-        if (customerMemberDto.getId() != null) {
-            params.setId(customerMemberDto.getId());
-        }
-        if (customerMemberDto.getMobile() != null) {
-            params.setName(customerMemberDto.getMobile());
-        }
-        TableResult<CustomerMemberDto> listUser = userAdminService.list(customerMemberDto, page);
-        model.addAttribute(listUser);
-        return listUser;
+    ResultApi<Boolean> clearMobile(Model model, CustomerMemberDto customerMemberDto, String env) {
+        return userAdminService.clearMobile(customerMemberDto, env);
     }
 
     @GetMapping("/get/user")
