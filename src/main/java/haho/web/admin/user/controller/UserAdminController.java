@@ -21,7 +21,7 @@ public class UserAdminController {
 
     @GetMapping("/")
     public String home() {
-        return "user/home";
+        return "home";
     }
 
     @RequestMapping("/clear/mobile")
