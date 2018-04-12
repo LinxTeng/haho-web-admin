@@ -4,10 +4,9 @@
   
   <groupId>com.haho</groupId>
   <artifactId>haho-web-admin</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <version>0.0.1-SNAPSHOT</version>
   <name>haho.web.admin Maven Webapp</name>
-  <url>http://maven.apache.org</url>
   
   <properties>
         <java.version>1.8</java.version>
