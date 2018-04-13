@@ -15,7 +15,7 @@ public interface UserAdminService {
      * @date 2018年3月27日
      * @author linxTeng
      */
-    public TableResult<CustomerMemberDto> list(CustomerMemberDto customerDto, PageInfo page);
+    public TableResult<CustomerMemberDto> list(CustomerMemberDto customerDto, PageInfo page, String env);
 
     /**
      * 清除手机号

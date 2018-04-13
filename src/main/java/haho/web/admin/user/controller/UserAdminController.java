@@ -38,28 +38,9 @@ public class UserAdminController {
             return "user/home";
         }
         if (env == null) {
-            env = "test-a";
+            env = DataSourceSwith.TESTA;
         }
-        switch (env) {
-            case "test-a":
-                DataSourceSwith.switchToTesta();
-                break;
-            case "test-b":
-                DataSourceSwith.switchToTestb();
-                break;
-            case "dev-a":
-                DataSourceSwith.switchToDeva();
-                break;
-            case "dev-b":
-                DataSourceSwith.switchToDevb();
-                break;
-            case "yufabu":
-                DataSourceSwith.switchToYufabu();
-                break;
-            default:
-                break;
-        }
-        TableResult<CustomerMemberDto> listUser = userAdminService.list(customerMemberDto, page);
+        TableResult<CustomerMemberDto> listUser = userAdminService.list(customerMemberDto, page, env);
         model.addAttribute("result", listUser);
         model.addAttribute("param", customerMemberDto);
         model.addAttribute("env", env);

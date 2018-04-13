@@ -48,11 +48,11 @@
 
                   <div class="col-sm-2">
                     <select class="form-control" name="env" id="env" onchange="formSubmit()">
-	                    <option th:selected="${env =='dev-a'}">dev-a</option>
-	                    <option th:selected="${env =='dev-b'}">dev-b</option>
-	                    <option th:selected="${env =='test-a'}">test-a</option>
-	                    <option th:selected="${env =='test-b'}">test-b</option>
-	                    <option th:selected="${env =='yufabu'}">预发布</option>
+	                    <option value="dev-a" th:selected="${env =='dev-a'}">dev-a</option>
+	                    <option value="dev-b" th:selected="${env =='dev-b'}">dev-b</option>
+	                    <option value="test-a" th:selected="${env =='test-a'}">test-a</option>
+	                    <option value="test-b" th:selected="${env =='test-b'}">test-b</option>
+	                    <option value="yufabu" th:selected="${env =='yufabu'}">预发布</option>
                   	</select>
                   </div>
                 </div>
@@ -158,7 +158,7 @@ function clearMobile(memberid) {
             }else{
                 alert(result.message);
             }
-            
+            window.location.reload();//刷新本页
         },
         error : function(){
             alert("接口出错!");
